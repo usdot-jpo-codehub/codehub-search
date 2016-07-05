@@ -2,6 +2,7 @@
 The Heimdall Search subsystem that uses Elastic Search and other search and learning technologies
 
 # Elasticsearch installation
+```
 1) Download and install the Public Signing Key:
 	$ sudo rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
 2) Create a new yum repository file for Elasticsearch. Note that this is a single command:
@@ -43,8 +44,9 @@ You should see a response like:
 	$ sudo /etc/init.d/elasticsearch stop
 	OR
 	$ sudo service elasticsearch stop
-
+```
 # Logstash installation
+```
 1) Download and install the Public Signing Key (unless you already did it with ES installation):
 	$ sudo rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
 2) Create a new yum repository file for Logstash. Note that this is a single command:
@@ -80,3 +82,4 @@ output {
 }
 5) To run logstash (specify config file with -f flag)
 	$ /opt/logstash/bin/logstash -f /path/to/config.conf
+```
