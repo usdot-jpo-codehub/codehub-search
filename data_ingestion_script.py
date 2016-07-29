@@ -124,7 +124,7 @@ for org in orgs:
         repo_info['rank'] = num_stars + num_watchers + num_contributors + num_commits + num_releases
         repo_info['content'] = readme_contents
         repo_info['readme_url'] = readme_url
-        repo_info['contributors'] = contributor_list
+        repo_info['contributors_list'] = contributor_list
         repo_info['suggest'] = suggest
         
         # Add repo info to dictionary of all repos
