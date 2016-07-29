@@ -38,6 +38,7 @@ for org in orgs:
         proj_lang = None
         num_stars = None
         num_watchers = None
+        num_forks = None
         
         # Extract repository information
         if repo['name'] is not None:
@@ -52,6 +53,8 @@ for org in orgs:
             num_stars = repo['stargazers_count']
         if repo['watchers_count'] is not None:
             num_watchers = repo['watchers_count']
+        if repo['forks'] is not None:
+            num_forks = repo['forks']
         
         # Call API to retrieve information about contributors (including anonymous contributors)
         r_contributors = requests.get('https://api.github.com/repos/' + org + '/' + repo_name + '/contributors?client_id=' + client_id + '&client_secret=' + client_secret + '&anon=true')
@@ -59,12 +62,24 @@ for org in orgs:
         # Load contributors API response into list
         num_contributors = 0
         num_commits = 0
+        contributor_list = []
         if r_contributors.text != '':
             contributors_response = json.loads(r_contributors.text)
             
             for contributor in contributors_response:
                 num_contributors += 1
-                num_commits += contributor['contributions']           
+                num_commits += contributor['contributions']
+                contributor_info = {}
+                # If user is anonymous, they do not have 
+                if contributor['type'] == 'User':
+                    contributor_info['username'] = contributor['login']
+                    contributor_info['profile_url'] = contributor['html_url']
+                else:
+                    contributor_info['username'] = contributor['name']
+                    contributor_info['profile_url'] = None
+                
+                contributor_list.append(contributor_info)
+                 
             
         # Call API to retrive information about releases for repository
         r_releases = requests.get('https://api.github.com/repos/' + org + '/' + repo_name + '/releases?client_id=' + client_id + '&client_secret=' + client_secret)
@@ -105,9 +120,11 @@ for org in orgs:
         repo_info['contributors'] = num_contributors
         repo_info['commits'] = num_commits
         repo_info['releases'] = num_releases
+        repo_info['forks'] = num_forks
         repo_info['rank'] = num_stars + num_watchers + num_contributors + num_commits + num_releases
         repo_info['content'] = readme_contents
         repo_info['readme_url'] = readme_url
+        repo_info['contributors'] = contributor_list
         repo_info['suggest'] = suggest
         
         # Add repo info to dictionary of all repos
