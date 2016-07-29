@@ -1,6 +1,7 @@
 import requests
 import json
 import base64
+import re
 
 client_id = ''
 client_secret = ''
@@ -87,6 +88,10 @@ for org in orgs:
         if not readme_response.has_key('documentation_url'):
             readme_contents = base64.b64decode(readme_response['content'])
             readme_url = readme_response['download_url']
+
+        # Clean up and include project_name and project_description fields as input for autocomplete. Return only project_name as suggestions
+        suggest = '{"input": ["' + re.sub("[^a-zA-Z0-9\s]", '', repo_name) + '", "' + re.sub("[^a-zA-Z0-9\s]", '', proj_desc) + '"], "output": "' + re.sub("[^a-zA-Z0-9-\s]", '', repo_name) + '"}'
+        suggest = json.loads(suggest)
             
         # Store all repo information in dictionary
         repo_info['repository'] = repo_name
@@ -103,6 +108,7 @@ for org in orgs:
         repo_info['rank'] = num_stars + num_watchers + num_contributors + num_commits + num_releases
         repo_info['content'] = readme_contents
         repo_info['readme_url'] = readme_url
+        repo_info['suggest'] = suggest
         
         # Add repo info to dictionary of all repos
         all_repos[repo_name] = repo_info
