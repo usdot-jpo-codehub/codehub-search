@@ -1,7 +1,19 @@
 # heimdall-search
 The Heimdall Search subsystem that uses Elastic Search and other search and learning technologies
 
-# Elasticsearch installation
+# Installation, configuration, and data load for Elasticsearch and Logstash
+```
+Prerequisites:
+- logstash.conf, es_ls_driver.sh, es_ls_install.sh, es_ls_config.sh, es_ls_load_data.sh, and organization_info.json all located in /opt/heimdall
+
+Installation:
+1) Run the shell script driver to kick off installation, configuration, and data load for Elasticsearch and Logstash 
+	$ sh ./es_ls_driver.sh
+2) Once everything has run, Cntl-C to kill Logstash to prevent it from trying to continually index data
+	- This is a temporary solution until we have Logstash running upsert queries
+```
+
+# Elasticsearch installation (by hand)
 ```
 1) Download and install the Public Signing Key:
 	$ sudo rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
@@ -45,7 +57,7 @@ You should see a response like:
 	OR
 	$ sudo service elasticsearch stop
 ```
-# Logstash installation
+# Logstash installation (by hand)
 ```
 1) Download and install the Public Signing Key (unless you already did it with ES installation):
 	$ sudo rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
@@ -82,4 +94,13 @@ output {
 }
 5) To run logstash (specify config file with -f flag)
 	$ /opt/logstash/bin/logstash -f /path/to/config.conf
+```
+
+# Python Ingestion Script Requirements
+```
+1) Use Python version >= 2.7
+2) pip install requirements
+3) github_auth.txt
+	- First line of text file is client id
+	- Second line is client secret
 ```
