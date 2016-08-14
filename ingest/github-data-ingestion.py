@@ -134,8 +134,7 @@ def _get_public_orgs(config):
 
 
 def _get_contributors_info(config, org, repo_name):
-    contribs_response = requests.get(_get_github_url(config) + '/repos/' + org['login'] + '/' +
-                                     repo_name + '/contributors?anon=true&' + _get_auth_http_params(config))
+    contribs_response = requests.get(_get_github_url(config) + '/repos/' + org['login'] + '/' + repo_name + '/contributors?anon=true&' + _get_auth_http_params(config))
 
     num_contributors = 0
     num_commits = 0
@@ -271,12 +270,16 @@ def main(args):
 
     if config['env'] == 'ALL':
         ingest_logger.info('Processing Enterprise GitHub systems...')
+        config['env'] = 'ENTERPRISE'
         results = _ingest_org_data(config)
         ingest_logger.info('Done processing Enterprise GitHub systems')
 
         ingest_logger.info('Processing Public GitHub systems...')
+        config['env'] = 'PUBLIC'
         results.append(_ingest_org_data(config))
         ingest_logger.info('Done processing Public GitHub systems')
+
+        config['env'] = 'ALL'
     else:
         ingest_logger.info('Processing only %s GitHub system...', config['env'])
         results = _ingest_org_data(config)
