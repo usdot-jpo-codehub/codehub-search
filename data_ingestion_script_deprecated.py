@@ -3,6 +3,9 @@ import json
 import base64
 import re
 
+print "****** DEPRECATED ****** Use ingest/github-data-ingestion.py instead"
+exit()
+
 client_id = ''
 client_secret = ''
 with open('github_auth.txt', 'r') as myfile:
