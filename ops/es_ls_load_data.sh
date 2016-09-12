@@ -7,22 +7,34 @@ sudo service elasticsearch start
 # Give ES time to start up
 sleep 5
 
-# Create an index on which to apply a mapping
-sudo curl -XPUT 'localhost:9200/projects'
-
 # Create mapping to be used for autocomplete
-sudo curl -XPUT 'localhost:9200/projects/logs/_mapping' -d '{
-"logs" : {
-"properties" : {
-"project_name" : { "type" : "string" },
-"project_description" : { "type" : "string" },
-"content" : { "type" : "string" },
-"suggest" : { "type" : "completion",
-"analyzer" : "simple",
-"search_analyzer" : "simple"
-}
-}
-}
+sudo curl -XPUT http://localhost:9200/projects/ -d '{
+    "mappings": {
+        "logs": {
+            "properties": {
+                "project_name": {
+                    "type": "string"
+                },
+                "project_description" : {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "contributors_list": {
+                    "type": "object"
+                },
+                "componentDependencies": {
+                    "type": "object"
+                },
+                "suggest": {
+                    "type": "completion",
+                    "analyzer": "simple",
+                    "search_analyzer": "simple"
+                }
+            }
+        }
+    }
 }'
 
 # Run Logstash to index data into Elasticsearch
