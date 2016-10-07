@@ -12,13 +12,14 @@ The Heimdall Search subsystem that uses Elastic Search and other search and lear
 1. `Start Container` after the initial run type: `docker start stage-search-local`
 
 # Production Install
-`Docker coming soon`
+`Docker coming soon!`
+
 1. `Be Local` to the machine you're doing the install.
 1. `Run Install Scripts`: `./ops/create-search-server-driver.sh`
 
 # Load Initial Data
-1. `Run Data Loading` scripts `./ops/load-index-data.sh <host URL or IP> <json data file>`
+`Run Data Loading` scripts `./ops/load-index-data.sh <host URL or IP> <json data file>`
 
 # Reload Data (drops index and data)
-1. `Run Data Loading` scripts `./ops/reload-index-data.sh <host URL or IP> <json data file>`
+`Run Data Loading` scripts `./ops/reload-index-data.sh <host URL or IP> <json data file>`
 
