@@ -1,14 +1,21 @@
 #!/bin/bash
-# This script is to do handles the data loading into Elasticsearch
 
-# Start elasticsearch
-sudo service elasticsearch start
+#
+# This script creates the index, doc type, and mappings
+#
+# ASSUMPTIONS:
+# -- Elastic Search is running
+# -- Script is executed on the local box
+#
 
-# Give ES time to start up
-sleep 5
+SUCCESS=0
+ERROR=1
+HOST=localhost
+PORT=9200
+INDEX=projects
 
 # Create mapping for index
-curl -XPUT http://$HOST:9200/projects/ -d '{
+curl -XPUT http://$HOST:$PORT/$INDEX/ -d '{
     "mappings" : {
         "logs" : {
             "properties" : {

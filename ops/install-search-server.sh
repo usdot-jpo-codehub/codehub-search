@@ -1,5 +1,4 @@
 #!/bin/bash
-# This script is to install Elasticsearch and Logstash on the AWS EC2 for heimdall-search
 
 # Elasticsearch installation
 sudo rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
