@@ -5,7 +5,7 @@ The Heimdall Search subsystem that uses Elastic Search and other search and lear
 ## Install Search using Docker
 1. `Clone` repository
 1. `Install` [Docker Engine](https://docs.docker.com/) installed for your specific OS
-1. `Build Search Image` by running `docker build -t stage/search`
+1. `Build Search Image` by running `docker build -t stage/search ops` from project root
 1. `Run Container` by typing: `docker run -d -p 9200:9200 --name stage-search-local stage/search`
 1. `Open a browser` to `http://localhost:9200`
 1. `Stop Container` type: `docker stop stage-search-local`
