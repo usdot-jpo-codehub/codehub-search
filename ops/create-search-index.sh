@@ -270,6 +270,6 @@ elif [ "$STATUS" -eq 404 ]; then
    }
 }'
 else
-   echo "please check check i don't know what say other than just check...."
+   echo "please check whether the server is up...."
 fi
 
