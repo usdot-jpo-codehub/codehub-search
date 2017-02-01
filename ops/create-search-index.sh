@@ -27,7 +27,7 @@ if [ "$STATUS" -eq 200 ]; then
                "type": "custom",
                "tokenizer": "standard",
                "char_filter": "my_char",
-               "filter": ["lowercase","my_synonym_filter","edgy"]
+               "filter": ["lowercase","my_synonym_filter","edgy_title"]
            },
            "grimdall_analyzer": {
             "type": "custom",
@@ -39,18 +39,23 @@ if [ "$STATUS" -eq 200 ]; then
             "type": "custom",
                "tokenizer": "standard",
                "char_filter": "my_char",
-               "filter": ["lowercase","my_synonym_filter","edgy"]
+               "filter": ["lowercase","my_synonym_filter","edgy_lang"]
            }
        },
        "filter": {
-           "edgy": {
-               "type": "edge_ngram",
-               "min_gram": "5",
-               "max_gram": "15"
-           },
+            "edgy_title": {
+                "type": "edge_ngram",
+                "min_gram": "4",
+                "max_gram": "10"
+            },
+            "edgy_lang": {
+                 "type": "edge_ngram",
+                 "min_gram": "2",
+                 "max_gram": "10"
+             },
            "my_synonym_filter": {
                "type": "synonym",
-    "synonyms": ["javascript=>js"]
+	       "synonyms": ["javascript=>js"]
            },
            "my_stop": {
             "type": "stop",
@@ -95,13 +100,33 @@ if [ "$STATUS" -eq 200 ]; then
               }
             }
           },
-          "forks" : {
-            "type" : "string"
+         "created_at" : {
+            "type" : "date",
+            "format" : "strict_date_optional_time||epoch_millis"
           },
+	 "forks" : {
+	    "type":             "object",
+	    "properties": {
+		    "forkedRepos" : {
+	                "type":             "object",
+			"properties" : {
+			    "id" : {
+				"type" : "string"
+			   },
+			    "name" : {
+				"type" : "string"
+			   },
+			    "org_name" : {
+				"type" : "string" 
+			   }
+			}
+	    	    }
+	    }
+	  },
           "full_name" : {
             "type" : "string"
           },
-          "id" : {
+          "stage_id" : {
             "type" : "string"
           },
           "language" : {
@@ -109,7 +134,7 @@ if [ "$STATUS" -eq 200 ]; then
             "analyzer" : "language_analyzer"
           },
           "languages" : {
-            "type" : "string"
+            "type" : "object"
           },
           "organization" : {
             "properties" : {
@@ -164,7 +189,7 @@ if [ "$STATUS" -eq 200 ]; then
             "type" : "string"
           },
           "stars" : {
-            "type" : "string"
+            "type" : "long"
           },
           "suggest" : {
             "type" : "completion",
@@ -226,7 +251,7 @@ elif [ "$STATUS" -eq 404 ]; then
                    "type": "custom",
                    "tokenizer": "standard",
                    "char_filter": "my_char",
-                   "filter": ["lowercase","my_synonym_filter","edgy"]
+                   "filter": ["lowercase","my_synonym_filter","edgy_title"]
                },
                "grimdall_analyzer": {
                	"type": "custom",
@@ -238,20 +263,25 @@ elif [ "$STATUS" -eq 404 ]; then
                	"type": "custom",
                    "tokenizer": "standard",
                    "char_filter": "my_char",
-                   "filter": ["lowercase","my_synonym_filter","edgy"]
+                   "filter": ["lowercase","my_synonym_filter","edgy_lang"]
                }
            },
            "filter": {
-               "edgy": {
-                   "type": "edge_ngram",
-                   "min_gram": "2",
-                   "max_gram": "10"
-               },
-               "my_synonym_filter": {
+              "edgy_title": {
+                "type": "edge_ngram",
+                "min_gram": "4",
+                "max_gram": "10"
+              },
+              "edgy_lang": {
+                 "type": "edge_ngram",
+                 "min_gram": "2",
+                 "max_gram": "10"
+              },
+              "my_synonym_filter": {
                    "type": "synonym",
 					"synonyms": ["javascript=>js"]
-               },
-               "my_stop": {
+              },
+              "my_stop": {
                	"type": "stop",
                	"stopwords": "_english_"
                },
