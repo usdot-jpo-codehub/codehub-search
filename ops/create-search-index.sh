@@ -23,11 +23,23 @@ if [ "$STATUS" -eq 200 ]; then
    curl -X PUT http://localhost:9200/$INDEX/_settings -d '{
    "analysis": {
        "analyzer": {
+
+        "title_ngram_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "char_filter": "my_char",
+          "filter": [
+            "lowercase",
+            "my_synonym_filter",
+            "ngram_title"
+          ]
+        },
+
            "title_analyzer": {
                "type": "custom",
                "tokenizer": "standard",
                "char_filter": "my_char",
-               "filter": ["lowercase","my_synonym_filter","edgy_title"]
+               "filter": ["lowercase","my_synonym_filter"]
            },
            "grimdall_analyzer": {
             "type": "custom",
@@ -43,8 +55,8 @@ if [ "$STATUS" -eq 200 ]; then
            }
        },
        "filter": {
-            "edgy_title": {
-                "type": "edge_ngram",
+            "ngram_title": {
+                "type": "ngram",
                 "min_gram": "4",
                 "max_gram": "10"
             },
@@ -117,7 +129,7 @@ if [ "$STATUS" -eq 200 ]; then
 				"type" : "string"
 			   },
 			    "org_name" : {
-				"type" : "string" 
+				"type" : "string"
 			   }
 			}
 	    	    }
@@ -159,17 +171,24 @@ if [ "$STATUS" -eq 200 ]; then
             "type" : "string",
             "analyzer" : "grimdall_analyzer"
           },
-          "project_name" : {
-            "type" : "string",
-            "analyzer" : "title_analyzer"
-          },
+         "project_name": {
+          "type": "string",
+          "analyzer": "title_analyzer",
+          "fields": {
+            "substring": {
+              "type":     "string",
+              "analyzer": "title_ngram_analyzer"
+            }
+          }
+	 },
           "rank" : {
             "type" : "long"
           },
           "readMe" : {
             "properties" : {
               "content" : {
-                "type" : "string"
+                "type" : "string",
+                "analyzer": "grimdall_analyzer"
               },
               "url" : {
                 "type" : "string"
@@ -217,18 +236,31 @@ elif [ "$STATUS" -eq 404 ]; then
    "mappings": {
        "project": {
            "properties": {
-               "project_name": {
-                   "type": "string",
-                     "analyzer": "title_analyzer"
-               },
+		"project_name": {
+		  "type": "string",
+		  "analyzer": "title_analyzer",
+		  "fields": {
+		    "substring": {
+		      "type":     "string",
+		      "analyzer": "title_ngram_analyzer"
+		    }
+		}
+	       },
                "project_description": {
                    "type": "string",
                    	"analyzer": "grimdall_analyzer"
                },
-               "content": {
-                   "type": "string",
+              "readMe" : {
+                "properties" : {
+                  "content" : {
+                    "type" : "string",
                    	"analyzer": "grimdall_analyzer"
-               },
+                  },
+                  "url" : {
+                    "type" : "string"
+                  }
+                }
+              },
                "language": {
                	"type": "string",
                		"analyzer": "language_analyzer"
@@ -247,11 +279,21 @@ elif [ "$STATUS" -eq 404 ]; then
    "settings": {
        "analysis": {
            "analyzer": {
+		"title_ngram_analyzer": {
+		  "type": "custom",
+		  "tokenizer": "standard",
+		  "char_filter": "my_char",
+		  "filter": [
+		    "lowercase",
+		    "my_synonym_filter",
+		    "ngram_title"
+		  ]
+		},
                "title_analyzer": {
                    "type": "custom",
                    "tokenizer": "standard",
                    "char_filter": "my_char",
-                   "filter": ["lowercase","my_synonym_filter","edgy_title"]
+                   "filter": ["lowercase","my_synonym_filter"]
                },
                "grimdall_analyzer": {
                	"type": "custom",
@@ -267,8 +309,8 @@ elif [ "$STATUS" -eq 404 ]; then
                }
            },
            "filter": {
-              "edgy_title": {
-                "type": "edge_ngram",
+              "ngram_title": {
+                "type": "ngram",
                 "min_gram": "4",
                 "max_gram": "10"
               },
@@ -298,8 +340,8 @@ elif [ "$STATUS" -eq 404 ]; then
            }
        }
    }
+ }
 }'
 else
    echo "please check whether the server is up...."
 fi
-
