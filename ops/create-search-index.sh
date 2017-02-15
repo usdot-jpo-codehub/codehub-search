@@ -19,8 +19,8 @@ STATUS=$(curl -so /dev/null -w '%{response_code}' http://$HOST:$PORT/$INDEX)
 
 if [ "$STATUS" -eq 200 ]; then
    echo "Index exists ... Updating Index Mappings and Settings"
-   curl -X POST http://localhost:9200/$INDEX/_close
-   curl -X PUT http://localhost:9200/$INDEX/_settings -d '{
+   curl -X POST http://$HOST:$PORT/$INDEX/_close
+   curl -X PUT http://$HOST:$PORT/$INDEX/_settings -d '{
    "analysis": {
        "analyzer": {
 
@@ -48,11 +48,17 @@ if [ "$STATUS" -eq 200 ]; then
                "filter": ["lowercase","my_synonym_filter","my_stop","my_snow"]
            },
            "language_analyzer": {
-            "type": "custom",
-               "tokenizer": "standard",
-               "char_filter": "my_char",
-               "filter": ["lowercase","my_synonym_filter","edgy_lang"]
-           }
+                "type": "custom",
+                "tokenizer": "standard",
+                "char_filter": "my_char",
+                "filter": ["lowercase","my_synonym_filter","edgy_lang"]
+           },
+            "language_analyzer_search": {
+                "type": "custom",
+                "tokenizer": "standard",
+                "char_filter": "my_char",
+                "filter": ["lowercase","my_synonym_filter"]
+            }
        },
        "filter": {
             "ngram_title": {
@@ -86,8 +92,8 @@ if [ "$STATUS" -eq 200 ]; then
        }
    }
  }'
- curl -X POST http://localhost:9200/$INDEX/_open
- curl -X PUT http://localhost:9200/$INDEX/$TYPE/_mapping?ignore_conflicts=true -d '{
+ curl -X POST http://$HOST:$PORT/$INDEX/_open
+ curl -X PUT http://$HOST:$PORT/$INDEX/$TYPE/_mapping?ignore_conflicts=true -d '{
    "project" : {
         "properties" : {
           "commits" : {
@@ -143,7 +149,8 @@ if [ "$STATUS" -eq 200 ]; then
           },
           "language" : {
             "type" : "string",
-            "analyzer" : "language_analyzer"
+            "analyzer" : "language_analyzer",
+            "search_analyzer": "language_analyzer_search"
           },
           "languages" : {
             "type" : "object"
@@ -177,7 +184,8 @@ if [ "$STATUS" -eq 200 ]; then
           "fields": {
             "substring": {
               "type":     "string",
-              "analyzer": "title_ngram_analyzer"
+              "analyzer": "title_ngram_analyzer",
+              "search_analyzer": "title_analyzer"
             }
           }
 	 },
@@ -242,7 +250,8 @@ elif [ "$STATUS" -eq 404 ]; then
 		  "fields": {
 		    "substring": {
 		      "type":     "string",
-		      "analyzer": "title_ngram_analyzer"
+		      "analyzer": "title_ngram_analyzer",
+		      "search_analyzer": "title_analyzer"
 		    }
 		}
 	       },
@@ -263,7 +272,8 @@ elif [ "$STATUS" -eq 404 ]; then
               },
                "language": {
                	"type": "string",
-               		"analyzer": "language_analyzer"
+               		"analyzer": "language_analyzer",
+               		"search_analyzer": "language_analyzer_search"
                },
                "contributors_list" : {
                    "type" : "object"
@@ -306,7 +316,13 @@ elif [ "$STATUS" -eq 404 ]; then
                    "tokenizer": "standard",
                    "char_filter": "my_char",
                    "filter": ["lowercase","my_synonym_filter","edgy_lang"]
-               }
+               },
+            "language_analyzer_search": {
+                "type": "custom",
+                "tokenizer": "standard",
+                "char_filter": "my_char",
+                "filter": ["lowercase","my_synonym_filter"]
+            }
            },
            "filter": {
               "ngram_title": {
