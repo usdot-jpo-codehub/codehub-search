@@ -23,11 +23,23 @@ if [ "$STATUS" -eq 200 ]; then
    curl -X PUT http://localhost:9200/$INDEX/_settings -d '{
    "analysis": {
        "analyzer": {
+
+        "title_ngram_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "char_filter": "my_char",
+          "filter": [
+            "lowercase",
+            "my_synonym_filter",
+            "ngram_title"
+          ]
+        },
+
            "title_analyzer": {
                "type": "custom",
                "tokenizer": "standard",
                "char_filter": "my_char",
-               "filter": ["lowercase","my_synonym_filter","edgy"]
+               "filter": ["lowercase","my_synonym_filter"]
            },
            "grimdall_analyzer": {
             "type": "custom",
@@ -36,21 +48,32 @@ if [ "$STATUS" -eq 200 ]; then
                "filter": ["lowercase","my_synonym_filter","my_stop","my_snow"]
            },
            "language_analyzer": {
-            "type": "custom",
-               "tokenizer": "standard",
-               "char_filter": "my_char",
-               "filter": ["lowercase","my_synonym_filter","edgy"]
-           }
+                "type": "custom",
+                "tokenizer": "standard",
+                "char_filter": "my_char",
+                "filter": ["lowercase","my_synonym_filter","edgy_lang"]
+           },
+            "language_analyzer_search": {
+                "type": "custom",
+                "tokenizer": "standard",
+                "char_filter": "my_char",
+                "filter": ["lowercase","my_synonym_filter"]
+            }
        },
        "filter": {
-           "edgy": {
-               "type": "edge_ngram",
-               "min_gram": "5",
-               "max_gram": "15"
-           },
+            "ngram_title": {
+                "type": "ngram",
+                "min_gram": "4",
+                "max_gram": "10"
+            },
+            "edgy_lang": {
+                 "type": "edge_ngram",
+                 "min_gram": "2",
+                 "max_gram": "10"
+             },
            "my_synonym_filter": {
                "type": "synonym",
-    "synonyms": ["javascript=>js"]
+	       "synonyms": ["javascript=>js"]
            },
            "my_stop": {
             "type": "stop",
@@ -95,21 +118,42 @@ if [ "$STATUS" -eq 200 ]; then
               }
             }
           },
-          "forks" : {
-            "type" : "string"
+         "created_at" : {
+            "type" : "date",
+            "format" : "strict_date_optional_time||epoch_millis"
           },
+	 "forks" : {
+	    "type":             "object",
+	    "properties": {
+		    "forkedRepos" : {
+	                "type":             "object",
+			"properties" : {
+			    "id" : {
+				"type" : "string"
+			   },
+			    "name" : {
+				"type" : "string"
+			   },
+			    "org_name" : {
+				"type" : "string"
+			   }
+			}
+	    	    }
+	    }
+	  },
           "full_name" : {
             "type" : "string"
           },
-          "id" : {
+          "stage_id" : {
             "type" : "string"
           },
           "language" : {
             "type" : "string",
-            "analyzer" : "language_analyzer"
+            "analyzer" : "language_analyzer",
+            "search_analyzer": "language_analyzer_search"
           },
           "languages" : {
-            "type" : "string"
+            "type" : "object"
           },
           "organization" : {
             "properties" : {
@@ -134,17 +178,25 @@ if [ "$STATUS" -eq 200 ]; then
             "type" : "string",
             "analyzer" : "grimdall_analyzer"
           },
-          "project_name" : {
-            "type" : "string",
-            "analyzer" : "title_analyzer"
-          },
+         "project_name": {
+          "type": "string",
+          "analyzer": "title_analyzer",
+          "fields": {
+            "substring": {
+              "type":     "string",
+              "analyzer": "title_ngram_analyzer",
+              "search_analyzer": "title_analyzer"
+            }
+          }
+	 },
           "rank" : {
             "type" : "long"
           },
           "readMe" : {
             "properties" : {
               "content" : {
-                "type" : "string"
+                "type" : "string",
+                "analyzer": "grimdall_analyzer"
               },
               "url" : {
                 "type" : "string"
@@ -164,7 +216,7 @@ if [ "$STATUS" -eq 200 ]; then
             "type" : "string"
           },
           "stars" : {
-            "type" : "string"
+            "type" : "long"
           },
           "suggest" : {
             "type" : "completion",
@@ -188,25 +240,40 @@ if [ "$STATUS" -eq 200 ]; then
 elif [ "$STATUS" -eq 404 ]; then
    echo "Index doesn't exist...Creating new index with Mappings and Settings"
    # Create mapping for index
-   curl -XPUT http://$HOST:$PORT/$INDEX/ -d '{
+   curl -XPUT http://54.165.103.241:9200/projects_stage/ -d '{
    "mappings": {
        "project": {
            "properties": {
-               "project_name": {
-                   "type": "string",
-                     "analyzer": "title_analyzer"
-               },
+		"project_name": {
+		  "type": "string",
+		  "analyzer": "title_analyzer",
+		  "fields": {
+		    "substring": {
+		      "type":     "string",
+		      "analyzer": "title_ngram_analyzer",
+		      "search_analyzer": "title_analyzer"
+		    }
+		}
+	       },
                "project_description": {
                    "type": "string",
                    	"analyzer": "grimdall_analyzer"
                },
-               "content": {
-                   "type": "string",
+              "readMe" : {
+                "properties" : {
+                  "content" : {
+                    "type" : "string",
                    	"analyzer": "grimdall_analyzer"
-               },
+                  },
+                  "url" : {
+                    "type" : "string"
+                  }
+                }
+              },
                "language": {
                	"type": "string",
-               		"analyzer": "language_analyzer"
+               		"analyzer": "language_analyzer",
+               		"search_analyzer": "language_analyzer_search"
                },
                "contributors_list" : {
                    "type" : "object"
@@ -222,11 +289,21 @@ elif [ "$STATUS" -eq 404 ]; then
    "settings": {
        "analysis": {
            "analyzer": {
+		"title_ngram_analyzer": {
+		  "type": "custom",
+		  "tokenizer": "standard",
+		  "char_filter": "my_char",
+		  "filter": [
+		    "lowercase",
+		    "my_synonym_filter",
+		    "ngram_title"
+		  ]
+		},
                "title_analyzer": {
                    "type": "custom",
                    "tokenizer": "standard",
                    "char_filter": "my_char",
-                   "filter": ["lowercase","my_synonym_filter","edgy"]
+                   "filter": ["lowercase","my_synonym_filter"]
                },
                "grimdall_analyzer": {
                	"type": "custom",
@@ -238,20 +315,31 @@ elif [ "$STATUS" -eq 404 ]; then
                	"type": "custom",
                    "tokenizer": "standard",
                    "char_filter": "my_char",
-                   "filter": ["lowercase","my_synonym_filter","edgy"]
-               }
+                   "filter": ["lowercase","my_synonym_filter","edgy_lang"]
+               },
+            "language_analyzer_search": {
+                "type": "custom",
+                "tokenizer": "standard",
+                "char_filter": "my_char",
+                "filter": ["lowercase","my_synonym_filter"]
+            }
            },
            "filter": {
-               "edgy": {
-                   "type": "edge_ngram",
-                   "min_gram": "2",
-                   "max_gram": "10"
-               },
-               "my_synonym_filter": {
+              "ngram_title": {
+                "type": "ngram",
+                "min_gram": "4",
+                "max_gram": "10"
+              },
+              "edgy_lang": {
+                 "type": "edge_ngram",
+                 "min_gram": "2",
+                 "max_gram": "10"
+              },
+              "my_synonym_filter": {
                    "type": "synonym",
 					"synonyms": ["javascript=>js"]
-               },
-               "my_stop": {
+              },
+              "my_stop": {
                	"type": "stop",
                	"stopwords": "_english_"
                },
@@ -268,8 +356,8 @@ elif [ "$STATUS" -eq 404 ]; then
            }
        }
    }
+ }
 }'
 else
    echo "please check whether the server is up...."
 fi
-
