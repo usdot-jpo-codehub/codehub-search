@@ -19,8 +19,8 @@ STATUS=$(curl -so /dev/null -w '%{response_code}' http://$HOST:$PORT/$INDEX)
 
 if [ "$STATUS" -eq 200 ]; then
    echo "Index exists ... Updating Index Mappings and Settings"
-   curl -X POST http://localhost:9200/$INDEX/_close
-   curl -X PUT http://localhost:9200/$INDEX/_settings -d '{
+   curl -X POST http://$HOST:$PORT/$INDEX/_close
+   curl -X PUT http://$HOST:$PORT/$INDEX/_settings -d '{
    "analysis": {
        "analyzer": {
 
@@ -92,8 +92,8 @@ if [ "$STATUS" -eq 200 ]; then
        }
    }
  }'
- curl -X POST http://localhost:9200/$INDEX/_open
- curl -X PUT http://localhost:9200/$INDEX/$TYPE/_mapping?ignore_conflicts=true -d '{
+ curl -X POST http://$HOST:$PORT/$INDEX/_open
+ curl -X PUT http://$HOST:$PORT/$INDEX/$TYPE/_mapping?ignore_conflicts=true -d '{
    "project" : {
         "properties" : {
           "commits" : {
@@ -240,7 +240,7 @@ if [ "$STATUS" -eq 200 ]; then
 elif [ "$STATUS" -eq 404 ]; then
    echo "Index doesn't exist...Creating new index with Mappings and Settings"
    # Create mapping for index
-   curl -XPUT http://localhost:9200/projects_stage/ -d '{
+   curl -XPUT http://$HOST:$PORT/$INDEX/ -d '{
    "mappings": {
        "project": {
            "properties": {
