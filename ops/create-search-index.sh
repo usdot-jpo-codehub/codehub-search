@@ -240,7 +240,7 @@ if [ "$STATUS" -eq 200 ]; then
 elif [ "$STATUS" -eq 404 ]; then
    echo "Index doesn't exist...Creating new index with Mappings and Settings"
    # Create mapping for index
-   curl -XPUT http://54.165.103.241:9200/projects_stage/ -d '{
+   curl -XPUT http://localhost:9200/projects_stage/ -d '{
    "mappings": {
        "project": {
            "properties": {
