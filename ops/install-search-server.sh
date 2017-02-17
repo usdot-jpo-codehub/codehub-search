@@ -15,3 +15,4 @@ sudo yum -y install elasticsearch
 sudo sed -i '54s/.*/network.host: 0.0.0.0/' /etc/elasticsearch/elasticsearch.yml
 sudo sed -i '$ a script.engine.groovy.inline.search: on' /etc/elasticsearch/elasticsearch.yml
 sudo sed -i '$ a script.engine.groovy.inline.update: on' /etc/elasticsearch/elasticsearch.yml
+sudo cp forked_custom_update.groovy /etc/elasticsearch/scripts/
