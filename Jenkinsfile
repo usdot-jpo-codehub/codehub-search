@@ -52,17 +52,17 @@ node {
       }
 
       stage('Integration Test1') {
-          script {
+      stage('Integration Test') {
+        dir ('App'){
+            script {
 
-              sh 'echo Integration Test 1 is complete'
-          }
+                sh 'docker-compose up -d'
+                sh 'docker-compose logs --tail="all"'
+                sh 'docker-compose down'
+                sh 'echo Integration Test is complete'
+            }
+        }
       }
-
-      stage('Integration Test2') {
-          script {
-
-              sh 'echo Integration Test 2 is complete'
-          }
       }
 
       stage('Build Codehub-UI Base Image') {
