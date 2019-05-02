@@ -1,0 +1,10 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "arn:aws:ecs:us-east-1:797335914619:task-definition/codehub-search:20"
+        LoadBalancerInfo:
+          ContainerName: "codehub-search"
+          ContainerPort: 9200
+        PlatformVersion: "LATEST"

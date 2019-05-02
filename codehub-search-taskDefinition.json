@@ -1,0 +1,22 @@
+{
+    "family": "codehub-search",
+        "networkMode": "awsvpc",
+        "containerDefinitions": [
+            {
+                "name": "codehub-search",
+                "image": "797335914619.dkr.ecr.us-east-1.amazonaws.com/dev-codehub/codehub-search:latest",
+                "portMappings": [
+                  {
+                    "containerPort": 9200
+                  }
+                ],
+                "essential": true
+            }
+        ],
+        "requiresCompatibilities": [
+            "FARGATE"
+        ],
+        "cpu": "256",
+        "memory": "512",
+        "executionRoleArn": "arn:aws:iam::797335914619:role/codehub-cicd-service"
+}

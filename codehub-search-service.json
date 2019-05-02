@@ -1,0 +1,26 @@
+{
+    "cluster": "codehub-cluster",
+    "serviceName": "codehub-search-service",
+    "taskDefinition": "codehub-search",
+    "loadBalancers": [
+        {
+            "targetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:797335914619:targetgroup/dev-codehub-search-target2/5c76498f6ad08f1e",
+            "containerName": "codehub-search",
+            "containerPort": 9200
+        }
+    ],
+    "launchType": "FARGATE",
+    "schedulingStrategy": "REPLICA",
+    "deploymentController": {
+        "type": "CODE_DEPLOY"
+    },
+    "platformVersion": "LATEST",
+    "networkConfiguration": {
+       "awsvpcConfiguration": {
+          "assignPublicIp": "DISABLED",
+          "securityGroups": [ "sg-0195b8748c970c554","sg-0bd49a1dfe5fded6a"],
+          "subnets": [ "subnet-0e3a4804e04a9bccf", "subnet-0b76afe0a166e6f7b","subnet-0c5bb2a7c96071eff","subnet-0e3b14a2e83c2c5ce","subnet-015520990db354076","subnet-0efabf0fc5dbb82d6"]
+       }
+    },
+    "desiredCount": 1
+}

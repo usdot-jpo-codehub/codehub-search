@@ -1,0 +1,12 @@
+{
+    "applicationName": "codehub-search",
+    "deploymentGroupName": "codehub-search-dg",
+    "revision": {
+        "revisionType": "S3",
+        "s3Location": {
+            "bucket": "codehub-dev-search",
+            "key": "appspec.yaml",
+            "bundleType": "YAML"
+        }
+    }
+}
