@@ -18,14 +18,14 @@ node {
         nodejs('node') {
             dir ('App'){
               script {
-                sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_mapping'
-                sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_settings'
-                sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_mapping'
-                sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_settings'
-                sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/_health'
-                sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/_health'
-                sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_count'
-                sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_count'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_mapping?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_settings?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_mapping?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_settings?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_health?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_health?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_count?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_count?pretty'
                 sh 'echo Bundling is Complete!!'
             }
           }
@@ -38,8 +38,6 @@ node {
         script {
             def scannerHome = tool 'SonarQube Scanner 2.8';
             withSonarQubeEnv('SonarQube') {
-                    sh 'ls "${scannerHome}"/bin/'
-                    sh 'cat /var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQube_Scanner_2.8/conf/sonar-scanner.properties'
                     sh "${scannerHome}/bin/sonar-scanner -X  -Dsonar.projectName=codehub-search -Dsonar.projectVersion=1.0.0 -Dsonar.projectKey=codehub-search -Dsonar.sources=."
                 }
             }
@@ -54,7 +52,6 @@ node {
       stage('Integration Test') {
         dir ('App'){
             script {
-
                 sh 'docker-compose up -d'
                 sh 'docker-compose logs --tail="all"'
                 sh 'docker-compose down'
@@ -99,14 +96,14 @@ node {
       nodejs('node') {
             script {
               sh './process_deployment.sh'
-              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_mapping'
-              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_settings'
-              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_mapping'
-              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_settings'
-              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/_health'
-              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/_health'
-              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_count'
-              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_count'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_mapping?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_settings?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_mapping?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_settings?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_health?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_health?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/projects/_count?pretty'
+              sh 'curl -XGET http://internal-dev-codehub-search-118857287.us-east-1.elb.amazonaws.com:9200/code/_count?pretty'
 
           }
         }

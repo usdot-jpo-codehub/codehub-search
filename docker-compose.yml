@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  test-ui:
+    image: 797335914619.dkr.ecr.us-east-1.amazonaws.com/dev-codehub/codehub-ui:latest
+    container_name: 'codehub-ui'
+    ports:
+      - 81:80
+      - 9000:9000
+    #command: >
+    #  sh -c 'pm2 start server/server.js --no-daemon'
+  test-api:
+    image: 797335914619.dkr.ecr.us-east-1.amazonaws.com/dev-codehub/codehub-api:latest
+    container_name: 'codehub-api'
+    ports:
+      - 3000:3000
+   #command:
+    #  sh -c 'cd /app/dot-task4-uiapp && gulp build &'
+  test-search:
+    image: 797335914619.dkr.ecr.us-east-1.amazonaws.com/dev-codehub/codehub-search:latest
+    container_name: 'codehub-search'
+    ports:
+      - 9200:9200
