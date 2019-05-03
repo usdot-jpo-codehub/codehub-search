@@ -21,4 +21,4 @@ The Heimdall Search subsystem that uses Elastic Search and other search and lear
 `Run Data Loading` scripts `./ops/load-index-data.sh <host URL or IP> <json data file>`
 
 # Reload Data (drops index and data)
-`Run Data Loading` scripts `./ops/reload-index-data.sh <host URL or IP> <json data file>`
+`Run Data Loading` scripts `./ops/reload-index-data.sh <host URL or IP> <json data file>   `
