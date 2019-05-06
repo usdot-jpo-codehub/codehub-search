@@ -42,11 +42,6 @@ node {
             }
         }
       }
-      stage('508 Complaince') {
-          script {
-              sh 'echo 508 Complaince is complete'
-          }
-      }
 
       stage('Integration Test') {
         dir ('App'){
