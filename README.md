@@ -1,7 +1,7 @@
 # codehub-search
 ElasticSearch Docker image and run scripts.
 
-## Install Search using Docker
+## Install and Run
 1. `Clone` repository
 1. `Install` [Docker Engine](https://docs.docker.com/) for your specific OS
 1. `Build and Run ElasticSearch Container`: `./build-and-run.sh`
