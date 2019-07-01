@@ -282,6 +282,39 @@ if [ "$STATUS" -eq 200 ]; then
         "type": "date",
         "format": "strict_date_optional_time||epoch_millis"
       },
+      "vscan": {
+        "properties": {
+          "data_scanned": {
+            "type": "string"
+          },
+          "infected_files": {
+            "type": "long"
+          },
+          "lastscan": {
+            "type": "date",
+            "format": "strict_date_optional_time||epoch_millis"
+          },
+          "reported_files": {
+            "properties": {
+              "filename": {
+                "type": "string"
+              },
+              "virus": {
+                "type": "string"
+              }
+            }
+          },
+          "scanned_directories": {
+            "type": "long"
+          },
+          "scanned_files": {
+            "type": "long"
+          },
+          "time": {
+            "type": "string"
+          }
+        }
+      },
       "watchers": {
         "type": "long"
       }
@@ -463,6 +496,39 @@ elif [ "$STATUS" -eq 404 ]; then
         "updated_at": {
           "type": "date",
           "format": "strict_date_optional_time||epoch_millis"
+        },
+        "vscan": {
+          "properties": {
+            "data_scanned": {
+              "type": "string"
+            },
+            "infected_files": {
+              "type": "long"
+            },
+            "lastscan": {
+              "type": "date",
+              "format": "strict_date_optional_time||epoch_millis"
+            },
+            "reported_files": {
+              "properties": {
+                "filename": {
+                  "type": "string"
+                },
+                "virus": {
+                  "type": "string"
+                }
+              }
+            },
+            "scanned_directories": {
+              "type": "long"
+            },
+            "scanned_files": {
+              "type": "long"
+            },
+            "time": {
+              "type": "string"
+            }
+          }
         },
         "watchers": {
           "type": "long"
