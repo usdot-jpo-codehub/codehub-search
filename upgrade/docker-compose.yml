@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  codehub-search:
+    image: codehub-search:2.0
+    container_name: codehub-search
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    environment:
+      - discovery.type=single-node
+
