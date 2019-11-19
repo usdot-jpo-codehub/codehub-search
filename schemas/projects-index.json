@@ -1,0 +1,303 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "title_ngram_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "char_filter": "my_char",
+          "filter": [
+            "lowercase",
+            "my_synonym_filter",
+            "ngram_title"
+          ]
+        },
+        "title_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "char_filter": "my_char",
+          "filter": [
+            "lowercase",
+            "my_synonym_filter"
+          ]
+        },
+        "grimdall_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "char_filter": "my_char",
+          "filter": [
+            "lowercase",
+            "my_synonym_filter",
+            "my_stop",
+            "my_snow"
+          ]
+        },
+        "language_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "char_filter": "my_char",
+          "filter": [
+            "lowercase",
+            "my_synonym_filter",
+            "edgy_lang"
+          ]
+        },
+        "language_analyzer_search": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "char_filter": "my_char",
+          "filter": [
+            "lowercase",
+            "my_synonym_filter"
+          ]
+        }
+      },
+      "filter": {
+        "ngram_title": {
+          "type": "ngram",
+          "min_gram": "4",
+          "max_gram": "10"
+        },
+        "edgy_lang": {
+          "type": "edge_ngram",
+          "min_gram": "2",
+          "max_gram": "10"
+        },
+        "my_synonym_filter": {
+          "type": "synonym",
+          "synonyms": [
+            "javascript=>js"
+          ]
+        },
+        "my_stop": {
+          "type": "stop",
+          "stopwords": "_english_"
+        },
+        "my_snow": {
+          "type": "snowball",
+          "language": "English"
+        }
+      },
+      "char_filter": {
+        "my_char": {
+          "type": "mapping",
+          "mappings": [
+            "++ => plusplus",
+            "# => sharp"
+          ]
+        }
+      }
+    },
+    "index": {
+      "max_ngram_diff": 6
+    }
+  },
+  "mappings": {
+    "properties": {
+      "commits": {
+        "type": "long"
+      },
+      "contributors": {
+        "type": "long"
+      },
+      "contributors_list": {
+        "properties": {
+          "avatar_url": {
+            "type": "text"
+          },
+          "profile_url": {
+            "type": "text"
+          },
+          "user_type": {
+            "type": "text"
+          },
+          "username": {
+            "type": "text"
+          }
+        }
+      },
+      "created_at": {
+        "type": "date",
+        "format": "strict_date_optional_time||epoch_millis"
+      },
+      "forks": {
+        "type": "object",
+        "properties": {
+          "forkedRepos": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "text"
+              },
+              "name": {
+                "type": "text"
+              },
+              "org_name": {
+                "type": "text"
+              }
+            }
+          }
+        }
+      },
+      "full_name": {
+        "type": "text"
+      },
+      "stage_id": {
+        "type": "text"
+      },
+      "language": {
+        "type": "text",
+        "analyzer": "language_analyzer",
+        "search_analyzer": "language_analyzer_search"
+      },
+      "languages": {
+        "type": "object"
+      },
+      "organization": {
+        "properties": {
+          "org_avatar_url": {
+            "type": "text"
+          },
+          "org_type": {
+            "type": "text"
+          },
+          "organization": {
+            "type": "text"
+          },
+          "organization_url": {
+            "type": "text"
+          }
+        }
+      },
+      "origin": {
+        "type": "text"
+      },
+      "project_description": {
+        "type": "text",
+        "analyzer": "grimdall_analyzer"
+      },
+      "project_name": {
+        "type": "text",
+        "analyzer": "title_analyzer",
+        "fields": {
+          "substring": {
+            "type": "text",
+            "analyzer": "title_ngram_analyzer",
+            "search_analyzer": "title_analyzer"
+          }
+        }
+      },
+      "rank": {
+        "type": "long"
+      },
+      "readMe": {
+        "properties": {
+          "content": {
+            "type": "text",
+            "analyzer": "grimdall_analyzer"
+          },
+          "url": {
+            "type": "text"
+          }
+        }
+      },
+      "releases": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "text"
+          },
+          "name": {
+            "type": "text"
+          },
+          "tag_name": {
+            "type": "text"
+          },
+          "assets": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "text"
+              },
+              "name": {
+                "type": "text"
+              },
+              "label": {
+                "type": "text"
+              },
+              "size": {
+                "type": "long"
+              },
+              "dowload_count": {
+                "type": "long"
+              }
+            }
+          },
+          "total_downloads": {
+            "type": "long"
+          }
+        }
+      },
+      "repository": {
+        "type": "text"
+      },
+      "repository_url": {
+        "type": "text"
+      },
+      "stage_source": {
+        "type": "text"
+      },
+      "stars": {
+        "type": "long"
+      },
+      "suggest": {
+        "type": "completion",
+        "analyzer": "simple",
+        "preserve_separators": true,
+        "preserve_position_increments": true,
+        "max_input_length": 50
+      },
+      "updated_at": {
+        "type": "date",
+        "format": "strict_date_optional_time||epoch_millis"
+      },
+      "vscan": {
+        "properties": {
+          "data_scanned": {
+            "type": "text"
+          },
+          "infected_files": {
+            "type": "long"
+          },
+          "lastscan": {
+            "type": "date",
+            "format": "strict_date_optional_time||epoch_millis"
+          },
+          "reported_files": {
+            "properties": {
+              "filename": {
+                "type": "text"
+              },
+              "virus": {
+                "type": "text"
+              }
+            }
+          },
+          "scanned_directories": {
+            "type": "long"
+          },
+          "scanned_files": {
+            "type": "long"
+          },
+          "time": {
+            "type": "text"
+          }
+        }
+      },
+      "watchers": {
+        "type": "long"
+      }
+    }
+  }
+}
+

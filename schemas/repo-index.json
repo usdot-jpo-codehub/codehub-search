@@ -1,0 +1,1 @@
+{"repos":{"mappings":{"properties":{"etag":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}},"repo":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}}}}}
