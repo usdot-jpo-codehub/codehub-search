@@ -1,99 +1,123 @@
 {
   "settings": {
-    "analysis": {
-      "analyzer": {
-        "title_ngram_analyzer": {
-          "type": "custom",
-          "tokenizer": "standard",
-          "char_filter": "my_char",
-          "filter": [
-            "lowercase",
-            "my_synonym_filter",
-            "ngram_title"
-          ]
-        },
-        "title_analyzer": {
-          "type": "custom",
-          "tokenizer": "standard",
-          "char_filter": "my_char",
-          "filter": [
-            "lowercase",
-            "my_synonym_filter"
-          ]
-        },
-        "grimdall_analyzer": {
-          "type": "custom",
-          "tokenizer": "standard",
-          "char_filter": "my_char",
-          "filter": [
-            "lowercase",
-            "my_synonym_filter",
-            "my_stop",
-            "my_snow"
-          ]
-        },
-        "language_analyzer": {
-          "type": "custom",
-          "tokenizer": "standard",
-          "char_filter": "my_char",
-          "filter": [
-            "lowercase",
-            "my_synonym_filter",
-            "edgy_lang"
-          ]
-        },
-        "language_analyzer_search": {
-          "type": "custom",
-          "tokenizer": "standard",
-          "char_filter": "my_char",
-          "filter": [
-            "lowercase",
-            "my_synonym_filter"
-          ]
-        }
-      },
-      "filter": {
-        "ngram_title": {
-          "type": "ngram",
-          "min_gram": "4",
-          "max_gram": "10"
-        },
-        "edgy_lang": {
-          "type": "edge_ngram",
-          "min_gram": "2",
-          "max_gram": "10"
-        },
-        "my_synonym_filter": {
-          "type": "synonym",
-          "synonyms": [
-            "javascript=>js"
-          ]
-        },
-        "my_stop": {
-          "type": "stop",
-          "stopwords": "_english_"
-        },
-        "my_snow": {
-          "type": "snowball",
-          "language": "English"
-        }
-      },
-      "char_filter": {
-        "my_char": {
-          "type": "mapping",
-          "mappings": [
-            "++ => plusplus",
-            "# => sharp"
-          ]
-        }
-      }
-    },
     "index": {
-      "max_ngram_diff": 6
+      "max_ngram_diff": "6",
+      "number_of_shards": "1",
+      "analysis": {
+        "filter": {
+          "my_synonym_filter": {
+            "type": "synonym",
+            "synonyms": [
+              "javascript=>js"
+            ]
+          },
+          "edgy_lang": {
+            "type": "edge_ngram",
+            "min_gram": "2",
+            "max_gram": "10"
+          },
+          "ngram_title": {
+            "type": "ngram",
+            "min_gram": "4",
+            "max_gram": "10"
+          },
+          "my_snow": {
+            "type": "snowball",
+            "language": "English"
+          },
+          "my_stop": {
+            "type": "stop",
+            "stopwords": "_english_"
+          }
+        },
+        "analyzer": {
+          "title_ngram_analyzer": {
+            "filter": [
+              "lowercase",
+              "my_synonym_filter",
+              "ngram_title"
+            ],
+            "char_filter": "my_char",
+            "type": "custom",
+            "tokenizer": "standard"
+          },
+          "language_analyzer": {
+            "filter": [
+              "lowercase",
+              "my_synonym_filter",
+              "edgy_lang"
+            ],
+            "char_filter": "my_char",
+            "type": "custom",
+            "tokenizer": "standard"
+          },
+          "language_analyzer_search": {
+            "filter": [
+              "lowercase",
+              "my_synonym_filter"
+            ],
+            "char_filter": "my_char",
+            "type": "custom",
+            "tokenizer": "standard"
+          },
+          "title_analyzer": {
+            "filter": [
+              "lowercase",
+              "my_synonym_filter"
+            ],
+            "char_filter": "my_char",
+            "type": "custom",
+            "tokenizer": "standard"
+          },
+          "grimdall_analyzer": {
+            "filter": [
+              "lowercase",
+              "my_synonym_filter",
+              "my_stop",
+              "my_snow"
+            ],
+            "char_filter": "my_char",
+            "type": "custom",
+            "tokenizer": "standard"
+          }
+        },
+        "char_filter": {
+          "my_char": {
+            "type": "mapping",
+            "mappings": [
+              "++ => plusplus",
+              "# => sharp"
+            ]
+          }
+        }
+      },
+      "number_of_replicas": "1"
     }
   },
   "mappings": {
     "properties": {
+      "badges": {
+        "properties": {
+          "status": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "codehub_id": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
       "commits": {
         "type": "long"
       },
@@ -117,14 +141,20 @@
         }
       },
       "created_at": {
-        "type": "date",
-        "format": "strict_date_optional_time||epoch_millis"
+        "type": "date"
+      },
+      "etag": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
       },
       "forks": {
-        "type": "object",
         "properties": {
           "forkedRepos": {
-            "type": "object",
             "properties": {
               "id": {
                 "type": "text"
@@ -142,16 +172,377 @@
       "full_name": {
         "type": "text"
       },
-      "stage_id": {
-        "type": "text"
-      },
       "language": {
         "type": "text",
         "analyzer": "language_analyzer",
         "search_analyzer": "language_analyzer_search"
       },
       "languages": {
-        "type": "object"
+        "properties": {
+          "AGS Script": {
+            "type": "long"
+          },
+          "AMPL": {
+            "type": "long"
+          },
+          "ASP": {
+            "type": "long"
+          },
+          "ApacheConf": {
+            "type": "long"
+          },
+          "Assembly": {
+            "type": "long"
+          },
+          "Awk": {
+            "type": "long"
+          },
+          "Batchfile": {
+            "type": "long"
+          },
+          "C": {
+            "type": "long"
+          },
+          "C#": {
+            "type": "long"
+          },
+          "C++": {
+            "type": "long"
+          },
+          "CMake": {
+            "type": "long"
+          },
+          "CSS": {
+            "type": "long"
+          },
+          "Dockerfile": {
+            "type": "long"
+          },
+          "Forth": {
+            "type": "long"
+          },
+          "Fortran": {
+            "type": "long"
+          },
+          "Groff": {
+            "type": "long"
+          },
+          "HTML": {
+            "type": "long"
+          },
+          "Java": {
+            "type": "long"
+          },
+          "JavaScript": {
+            "type": "long"
+          },
+          "Jupyter Notebook": {
+            "type": "long"
+          },
+          "Lex": {
+            "type": "long"
+          },
+          "LiveScript": {
+            "type": "long"
+          },
+          "M4": {
+            "type": "long"
+          },
+          "MATLAB": {
+            "type": "long"
+          },
+          "Makefile": {
+            "type": "long"
+          },
+          "Objective-C": {
+            "type": "long"
+          },
+          "OpenEdge ABL": {
+            "type": "long"
+          },
+          "PHP": {
+            "type": "long"
+          },
+          "PLSQL": {
+            "type": "long"
+          },
+          "PLpgSQL": {
+            "type": "long"
+          },
+          "Pascal": {
+            "type": "long"
+          },
+          "Pawn": {
+            "type": "long"
+          },
+          "Perl": {
+            "type": "long"
+          },
+          "Perl 6": {
+            "type": "long"
+          },
+          "PowerShell": {
+            "type": "long"
+          },
+          "Python": {
+            "type": "long"
+          },
+          "QMake": {
+            "type": "long"
+          },
+          "Roff": {
+            "type": "long"
+          },
+          "Ruby": {
+            "type": "long"
+          },
+          "Shell": {
+            "type": "long"
+          },
+          "TeX": {
+            "type": "long"
+          },
+          "TypeScript": {
+            "type": "long"
+          },
+          "XS": {
+            "type": "long"
+          },
+          "Yacc": {
+            "type": "long"
+          }
+        }
+      },
+      "metrics": {
+        "properties": {
+          "bugs": {
+            "properties": {
+              "frmt_val": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "key": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "val": {
+                "type": "long"
+              }
+            }
+          },
+          "code_smells": {
+            "properties": {
+              "frmt_val": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "key": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "val": {
+                "type": "long"
+              }
+            }
+          },
+          "complexity": {
+            "properties": {
+              "frmt_val": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "key": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "val": {
+                "type": "long"
+              }
+            }
+          },
+          "reliability_rating": {
+            "properties": {
+              "data": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "frmt_val": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "key": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "val": {
+                "type": "long"
+              }
+            }
+          },
+          "security_rating": {
+            "properties": {
+              "data": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "frmt_val": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "key": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "val": {
+                "type": "long"
+              }
+            }
+          },
+          "sqale_rating": {
+            "properties": {
+              "data": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "frmt_val": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "key": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "val": {
+                "type": "long"
+              }
+            }
+          },
+          "violations": {
+            "properties": {
+              "frmt_val": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "key": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "val": {
+                "type": "long"
+              }
+            }
+          },
+          "vulnerabilities": {
+            "properties": {
+              "frmt_val": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "key": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "val": {
+                "type": "long"
+              }
+            }
+          }
+        }
       },
       "organization": {
         "properties": {
@@ -178,14 +569,14 @@
       },
       "project_name": {
         "type": "text",
-        "analyzer": "title_analyzer",
         "fields": {
           "substring": {
             "type": "text",
             "analyzer": "title_ngram_analyzer",
             "search_analyzer": "title_analyzer"
           }
-        }
+        },
+        "analyzer": "title_analyzer"
       },
       "rank": {
         "type": "long"
@@ -202,8 +593,26 @@
         }
       },
       "releases": {
-        "type": "object",
         "properties": {
+          "assets": {
+            "properties": {
+              "dowload_count": {
+                "type": "long"
+              },
+              "id": {
+                "type": "text"
+              },
+              "label": {
+                "type": "text"
+              },
+              "name": {
+                "type": "text"
+              },
+              "size": {
+                "type": "long"
+              }
+            }
+          },
           "id": {
             "type": "text"
           },
@@ -213,28 +622,17 @@
           "tag_name": {
             "type": "text"
           },
-          "assets": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "text"
-              },
-              "name": {
-                "type": "text"
-              },
-              "label": {
-                "type": "text"
-              },
-              "size": {
-                "type": "long"
-              },
-              "dowload_count": {
-                "type": "long"
-              }
-            }
-          },
           "total_downloads": {
             "type": "long"
+          }
+        }
+      },
+      "repo": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
           }
         }
       },
@@ -244,11 +642,23 @@
       "repository_url": {
         "type": "text"
       },
+      "stage_id": {
+        "type": "text"
+      },
       "stage_source": {
         "type": "text"
       },
       "stars": {
         "type": "long"
+      },
+      "status": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
       },
       "suggest": {
         "type": "completion",
@@ -258,8 +668,7 @@
         "max_input_length": 50
       },
       "updated_at": {
-        "type": "date",
-        "format": "strict_date_optional_time||epoch_millis"
+        "type": "date"
       },
       "vscan": {
         "properties": {
@@ -270,8 +679,7 @@
             "type": "long"
           },
           "lastscan": {
-            "type": "date",
-            "format": "strict_date_optional_time||epoch_millis"
+            "type": "date"
           },
           "reported_files": {
             "properties": {
@@ -300,4 +708,3 @@
     }
   }
 }
-
