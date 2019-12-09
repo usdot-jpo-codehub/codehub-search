@@ -10,4 +10,4 @@ if [ -z "$ELASTICSEARCH_URL" ]; then
     exit 1
 fi
 
-elasticsearch-dump --input=$ELASTICSEARCH_URL/repos --output=repos-data.json --type=data
+elasticdump --input=$ELASTICSEARCH_URL/repos --output=repos-data.json --type=data
