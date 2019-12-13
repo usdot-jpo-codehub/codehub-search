@@ -50,6 +50,13 @@
             "lowercase",
             "my_synonym_filter"
           ]
+        },
+        "lowercase_keyword": {
+          "type": "custom",
+          "tokenizer": "keyword",
+          "filter": [
+            "lowercase"
+          ]
         }
       },
       "filter": {
@@ -295,7 +302,8 @@
             "type": "text"
           },
           "organization": {
-            "type": "text"
+            "type": "text",
+            "analyzer": "lowercase_keyword"
           },
           "organization_url": {
             "type": "text"

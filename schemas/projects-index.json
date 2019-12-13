@@ -79,6 +79,13 @@
             "char_filter": "my_char",
             "type": "custom",
             "tokenizer": "standard"
+          },
+          "lowercase_keyword": {
+            "type": "custom",
+            "tokenizer": "keyword",
+            "filter": [
+              "lowercase"
+            ]
           }
         },
         "char_filter": {
@@ -556,7 +563,8 @@
             "type": "text"
           },
           "organization": {
-            "type": "text"
+            "type": "text",
+            "analyzer": "lowercase_keyword"
           },
           "organization_url": {
             "type": "text"
