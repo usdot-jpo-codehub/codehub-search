@@ -15,7 +15,7 @@ phases:
   build:
     commands:
       - npm install -g elasticdump
-      - mkdir data
+      - mkdir -p data
       - elasticdump --input=$DEPLOYED_ELASTICSEARCH_URL/projects --output=data/projects-data.json --type=data
       - elasticdump --input=$DEPLOYED_ELASTICSEARCH_URL/repos --output=data/repos-data.json --type=data
       - elasticdump --input=$DEPLOYED_ELASTICSEARCH_URL/code --output=data/code-data.json --type=data
