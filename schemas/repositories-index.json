@@ -1,0 +1,519 @@
+{
+  "repositories": {
+    "mappings": {
+      "properties": {
+        "id": {
+          "type": "text"
+        },
+        "codehub_data": {
+          "properties": {
+            "etag": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "isIngested": {
+              "type": "boolean"
+            },
+            "isIngestionEnabled": {
+              "type": "boolean"
+            },
+            "isVisible": {
+              "type": "boolean"
+            },
+            "lastIngested": {
+              "type": "date"
+            },
+            "lastModified": {
+              "type": "date"
+            },
+            "source": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "badges": {
+              "properties": {
+                "status": {
+                  "type": "text"
+                },
+                "isFeatured": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "generatedData": {
+          "properties": {
+            "rank": {
+              "type": "long"
+            },
+            "sonarMetrics": {
+              "properties": {
+                "bugs": {
+                  "properties": {
+                    "frmt_val": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "key": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "val": {
+                      "type": "float"
+                    }
+                  }
+                },
+                "code_smells": {
+                  "properties": {
+                    "frmt_val": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "key": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "val": {
+                      "type": "float"
+                    }
+                  }
+                },
+                "reliability_rating": {
+                  "properties": {
+                    "data": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "frmt_val": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "key": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "val": {
+                      "type": "float"
+                    }
+                  }
+                },
+                "security_rating": {
+                  "properties": {
+                    "data": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "frmt_val": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "key": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "val": {
+                      "type": "float"
+                    }
+                  }
+                },
+                "sqale_index": {
+                  "properties": {
+                    "frmt_val": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "key": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "val": {
+                      "type": "float"
+                    }
+                  }
+                },
+                "sqale_rating": {
+                  "properties": {
+                    "data": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "frmt_val": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "key": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "val": {
+                      "type": "float"
+                    }
+                  }
+                },
+                "violations": {
+                  "properties": {
+                    "frmt_val": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "key": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "val": {
+                      "type": "float"
+                    }
+                  }
+                },
+                "vulnerabilities": {
+                  "properties": {
+                    "frmt_val": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "key": {
+                      "type": "text",
+                      "fields": {
+                        "keyword": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        }
+                      }
+                    },
+                    "val": {
+                      "type": "float"
+                    }
+                  }
+                }
+              }
+            },
+            "vscan": {
+              "properties": {
+                "data_scanned": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "infected_files": {
+                  "type": "long"
+                },
+                "lastscan": {
+                  "type": "date"
+                },
+                "scanned_directories": {
+                  "type": "long"
+                },
+                "scanned_files": {
+                  "type": "long"
+                },
+                "time": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "source_data": {
+          "properties": {
+            "commits": {
+              "type": "long"
+            },
+            "contributors": {
+              "properties": {
+                "avatarUrl": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "profileUrl": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "userType": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "username": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "createdAt": {
+              "type": "date"
+            },
+            "description": {
+              "type": "text"
+            },
+            "forks": {
+              "properties": {
+                "forkedRepos": {
+                  "properties": {
+                    "id": {
+                      "type": "text"
+                    },
+                    "name": {
+                      "type": "text"
+                    },
+                    "owner": {
+                      "type": "text"
+                    }
+                  }
+                }
+              }
+            },
+            "language": {
+              "type": "text"
+            },
+            "languages": {
+              "type": "object"
+            },
+            "lastPush": {
+              "type": "date"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "owner": {
+              "properties": {
+                "avatarUrl": {
+                  "type": "text"
+                },
+                "name": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "type": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "url": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "readme": {
+              "properties": {
+                "content": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "url": {
+                  "type": "text"
+                }
+              }
+            },
+            "releases": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "text"
+                },
+                "name": {
+                  "type": "text"
+                },
+                "tagName": {
+                  "type": "text"
+                },
+                "assets": {
+                  "properties": {
+                    "id": {
+                      "type": "text"
+                    },
+                    "name": {
+                      "type": "text"
+                    },
+                    "label": {
+                      "type": "text"
+                    },
+                    "size": {
+                      "type": "long"
+                    },
+                    "dowloadCount": {
+                      "type": "long"
+                    }
+                  }
+                },
+                "totalDownloads": {
+                  "type": "long"
+                }
+              }
+            },
+            "repositoryUrl": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "stars": {
+              "type": "long"
+            },
+            "watchers": {
+              "type": "long"
+            }
+          }
+        }
+      }
+    }
+  }
+}
