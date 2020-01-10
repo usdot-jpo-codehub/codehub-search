@@ -18,3 +18,9 @@ echo 'Creating index: Repositories'
 curl -s -XPUT $HOST/repositories/ -H "Content-Type: application/json" -d @../schemas/repositories-index.json
 echo
 echo 'end'
+
+# Create Index: Related
+echo 'Creating index: Related'
+curl -s -XPUT $HOST/related/ -H "Content-Type: application/json" -d @../schemas/releated-index.json
+echo
+echo 'end'
