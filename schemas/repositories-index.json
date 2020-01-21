@@ -375,6 +375,9 @@
             "description": {
               "type": "text"
             },
+            "defaultBranch": {
+              "type": "text"
+            },
             "forks": {
               "properties": {
                 "forkedRepos": {
