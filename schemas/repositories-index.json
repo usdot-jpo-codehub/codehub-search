@@ -1,5 +1,107 @@
 {
   "repositories": {
+    "settings": {
+      "index": {
+        "max_ngram_diff": "6",
+        "number_of_shards": "1",
+        "analysis": {
+          "filter": {
+            "my_synonym_filter": {
+              "type": "synonym",
+              "synonyms": [
+                "javascript=>js"
+              ]
+            },
+            "edgy_lang": {
+              "type": "edge_ngram",
+              "min_gram": "2",
+              "max_gram": "10"
+            },
+            "ngram_title": {
+              "type": "ngram",
+              "min_gram": "4",
+              "max_gram": "10"
+            },
+            "my_snow": {
+              "type": "snowball",
+              "language": "English"
+            },
+            "my_stop": {
+              "type": "stop",
+              "stopwords": "_english_"
+            }
+          },
+          "analyzer": {
+            "title_ngram_analyzer": {
+              "filter": [
+                "lowercase",
+                "my_synonym_filter",
+                "ngram_title"
+              ],
+              "char_filter": "my_char",
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "language_analyzer": {
+              "filter": [
+                "lowercase",
+                "my_synonym_filter",
+                "edgy_lang"
+              ],
+              "char_filter": "my_char",
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "language_analyzer_search": {
+              "filter": [
+                "lowercase",
+                "my_synonym_filter"
+              ],
+              "char_filter": "my_char",
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "title_analyzer": {
+              "filter": [
+                "lowercase",
+                "my_synonym_filter"
+              ],
+              "char_filter": "my_char",
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "grimdall_analyzer": {
+              "filter": [
+                "lowercase",
+                "my_synonym_filter",
+                "my_stop",
+                "my_snow"
+              ],
+              "char_filter": "my_char",
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "lowercase_keyword": {
+              "type": "custom",
+              "tokenizer": "keyword",
+              "filter": [
+                "lowercase"
+              ]
+            }
+          },
+          "char_filter": {
+            "my_char": {
+              "type": "mapping",
+              "mappings": [
+                "++ => plusplus",
+                "# => sharp"
+              ]
+            }
+          }
+        },
+        "number_of_replicas": "1"
+      }
+    },
     "mappings": {
       "properties": {
         "id": {
@@ -319,12 +421,22 @@
                       "ignore_above": 256
                     }
                   }
+                },
+                "reported_files": {
+                  "properties": {
+                    "filename": {
+                      "type": "text"
+                    },
+                    "virus": {
+                      "type": "text"
+                    }
+                  }
                 }
               }
             }
           }
         },
-        "source_data": {
+        "sourceData": {
           "properties": {
             "commits": {
               "type": "long"
@@ -373,7 +485,8 @@
               "type": "date"
             },
             "description": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "grimdall_analyzer"
             },
             "defaultBranch": {
               "type": "text"
@@ -396,7 +509,9 @@
               }
             },
             "language": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "language_analyzer",
+              "search_analyzer": "language_analyzer_search"
             },
             "languages": {
               "type": "object"
@@ -407,11 +522,13 @@
             "name": {
               "type": "text",
               "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
+                "substring": {
+                  "type": "text",
+                  "analyzer": "title_ngram_analyzer",
+                  "search_analyzer": "title_analyzer"
                 }
-              }
+              },
+              "analyzer": "title_analyzer"
             },
             "owner": {
               "properties": {
@@ -451,12 +568,7 @@
               "properties": {
                 "content": {
                   "type": "text",
-                  "fields": {
-                    "keyword": {
-                      "type": "keyword",
-                      "ignore_above": 256
-                    }
-                  }
+                  "analyzer": "grimdall_analyzer"
                 },
                 "url": {
                   "type": "text"

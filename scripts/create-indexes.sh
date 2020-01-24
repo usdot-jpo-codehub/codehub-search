@@ -13,19 +13,14 @@ if [ "$STATUS" -ne 200 ]; then
   exit 1
 fi
 
-# Create Index: Projects
-echo 'Creating index: Projects'
-curl -s -XPUT $HOST/projects/ -H "Content-Type: application/json" -d @../schemas/projects-index.json
-echo
-
-echo 'Creating index: Code'
-# Create Index: Code
-curl -s -XPUT $HOST/code/ -H "Content-Type: application/json" -d @../schemas/code-index.json
+# Create Index: Repositories
+echo 'Creating index: Repositories'
+curl -s -XPUT $HOST/repositories/ -H "Content-Type: application/json" -d @../schemas/repositories-index.json
 echo
 echo 'end'
 
-echo 'Creating index: Repos'
-# Create Index: Code
-curl -s -XPUT $HOST/repos/ -H "Content-Type: application/json" -d @../schemas/repos-index.json
+# Create Index: Related
+echo 'Creating index: Related'
+curl -s -XPUT $HOST/related/ -H "Content-Type: application/json" -d @../schemas/releated-index.json
 echo
 echo 'end'
