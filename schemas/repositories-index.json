@@ -1,5 +1,4 @@
 {
-  "repositories": {
     "settings": {
       "index": {
         "max_ngram_diff": "6",
@@ -107,7 +106,7 @@
         "id": {
           "type": "text"
         },
-        "codehub_data": {
+        "codehubData": {
           "properties": {
             "etag": {
               "type": "text",
@@ -630,5 +629,4 @@
         }
       }
     }
-  }
 }
