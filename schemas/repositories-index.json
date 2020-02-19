@@ -1,632 +1,636 @@
 {
-    "settings": {
-      "index": {
-        "max_ngram_diff": "6",
-        "number_of_shards": "1",
-        "analysis": {
-          "filter": {
-            "my_synonym_filter": {
-              "type": "synonym",
-              "synonyms": [
-                "javascript=>js"
-              ]
-            },
-            "edgy_lang": {
-              "type": "edge_ngram",
-              "min_gram": "2",
-              "max_gram": "10"
-            },
-            "ngram_title": {
-              "type": "ngram",
-              "min_gram": "4",
-              "max_gram": "10"
-            },
-            "my_snow": {
-              "type": "snowball",
-              "language": "English"
-            },
-            "my_stop": {
-              "type": "stop",
-              "stopwords": "_english_"
+  "settings": {
+    "index": {
+      "max_ngram_diff": "6",
+      "number_of_shards": "1",
+      "analysis": {
+        "filter": {
+          "my_synonym_filter": {
+            "type": "synonym",
+            "synonyms": [
+              "javascript=>js"
+            ]
+          },
+          "edgy_lang": {
+            "type": "edge_ngram",
+            "min_gram": "2",
+            "max_gram": "10"
+          },
+          "ngram_title": {
+            "type": "ngram",
+            "min_gram": "4",
+            "max_gram": "10"
+          },
+          "my_snow": {
+            "type": "snowball",
+            "language": "English"
+          },
+          "my_stop": {
+            "type": "stop",
+            "stopwords": "_english_"
+          }
+        },
+        "analyzer": {
+          "title_ngram_analyzer": {
+            "filter": [
+              "lowercase",
+              "my_synonym_filter",
+              "ngram_title"
+            ],
+            "char_filter": "my_char",
+            "type": "custom",
+            "tokenizer": "standard"
+          },
+          "language_analyzer": {
+            "filter": [
+              "lowercase",
+              "my_synonym_filter",
+              "edgy_lang"
+            ],
+            "char_filter": "my_char",
+            "type": "custom",
+            "tokenizer": "standard"
+          },
+          "language_analyzer_search": {
+            "filter": [
+              "lowercase",
+              "my_synonym_filter"
+            ],
+            "char_filter": "my_char",
+            "type": "custom",
+            "tokenizer": "standard"
+          },
+          "title_analyzer": {
+            "filter": [
+              "lowercase",
+              "my_synonym_filter"
+            ],
+            "char_filter": "my_char",
+            "type": "custom",
+            "tokenizer": "standard"
+          },
+          "grimdall_analyzer": {
+            "filter": [
+              "lowercase",
+              "my_synonym_filter",
+              "my_stop",
+              "my_snow"
+            ],
+            "char_filter": "my_char",
+            "type": "custom",
+            "tokenizer": "standard"
+          },
+          "lowercase_keyword": {
+            "type": "custom",
+            "tokenizer": "keyword",
+            "filter": [
+              "lowercase"
+            ]
+          }
+        },
+        "char_filter": {
+          "my_char": {
+            "type": "mapping",
+            "mappings": [
+              "++ => plusplus",
+              "# => sharp"
+            ]
+          }
+        }
+      },
+      "number_of_replicas": "1"
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "text"
+      },
+      "codehubData": {
+        "properties": {
+          "etag": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
             }
           },
-          "analyzer": {
-            "title_ngram_analyzer": {
-              "filter": [
-                "lowercase",
-                "my_synonym_filter",
-                "ngram_title"
-              ],
-              "char_filter": "my_char",
-              "type": "custom",
-              "tokenizer": "standard"
-            },
-            "language_analyzer": {
-              "filter": [
-                "lowercase",
-                "my_synonym_filter",
-                "edgy_lang"
-              ],
-              "char_filter": "my_char",
-              "type": "custom",
-              "tokenizer": "standard"
-            },
-            "language_analyzer_search": {
-              "filter": [
-                "lowercase",
-                "my_synonym_filter"
-              ],
-              "char_filter": "my_char",
-              "type": "custom",
-              "tokenizer": "standard"
-            },
-            "title_analyzer": {
-              "filter": [
-                "lowercase",
-                "my_synonym_filter"
-              ],
-              "char_filter": "my_char",
-              "type": "custom",
-              "tokenizer": "standard"
-            },
-            "grimdall_analyzer": {
-              "filter": [
-                "lowercase",
-                "my_synonym_filter",
-                "my_stop",
-                "my_snow"
-              ],
-              "char_filter": "my_char",
-              "type": "custom",
-              "tokenizer": "standard"
-            },
-            "lowercase_keyword": {
-              "type": "custom",
-              "tokenizer": "keyword",
-              "filter": [
-                "lowercase"
-              ]
+          "isIngested": {
+            "type": "boolean"
+          },
+          "isIngestionEnabled": {
+            "type": "boolean"
+          },
+          "isVisible": {
+            "type": "boolean"
+          },
+          "lastIngested": {
+            "type": "date"
+          },
+          "lastModified": {
+            "type": "date"
+          },
+          "source": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
             }
           },
-          "char_filter": {
-            "my_char": {
-              "type": "mapping",
-              "mappings": [
-                "++ => plusplus",
-                "# => sharp"
-              ]
-            }
-          }
-        },
-        "number_of_replicas": "1"
-      }
-    },
-    "mappings": {
-      "properties": {
-        "id": {
-          "type": "text"
-        },
-        "codehubData": {
-          "properties": {
-            "etag": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "isIngested": {
-              "type": "boolean"
-            },
-            "isIngestionEnabled": {
-              "type": "boolean"
-            },
-            "isVisible": {
-              "type": "boolean"
-            },
-            "lastIngested": {
-              "type": "date"
-            },
-            "lastModified": {
-              "type": "date"
-            },
-            "source": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "badges": {
-              "properties": {
-                "status": {
-                  "type": "text"
-                },
-                "isFeatured": {
-                  "type": "boolean"
-                }
+          "badges": {
+            "properties": {
+              "status": {
+                "type": "text"
+              },
+              "isFeatured": {
+                "type": "boolean"
               }
             }
+          },
+          "categories": {
+            "type": "text",
+            "index": false
           }
-        },
-        "generatedData": {
-          "properties": {
-            "rank": {
-              "type": "long"
-            },
-            "sonarMetrics": {
-              "properties": {
-                "bugs": {
-                  "properties": {
-                    "frmt_val": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
+        }
+      },
+      "generatedData": {
+        "properties": {
+          "rank": {
+            "type": "long"
+          },
+          "sonarMetrics": {
+            "properties": {
+              "bugs": {
+                "properties": {
+                  "frmt_val": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
                       }
-                    },
-                    "key": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "val": {
-                      "type": "float"
                     }
-                  }
-                },
-                "code_smells": {
-                  "properties": {
-                    "frmt_val": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
+                  },
+                  "key": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
                       }
-                    },
-                    "key": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "val": {
-                      "type": "float"
                     }
+                  },
+                  "val": {
+                    "type": "float"
                   }
-                },
-                "reliability_rating": {
-                  "properties": {
-                    "data": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "frmt_val": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "key": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "val": {
-                      "type": "float"
-                    }
-                  }
-                },
-                "security_rating": {
-                  "properties": {
-                    "data": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "frmt_val": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "key": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "val": {
-                      "type": "float"
-                    }
-                  }
-                },
-                "sqale_index": {
-                  "properties": {
-                    "frmt_val": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "key": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "val": {
-                      "type": "float"
-                    }
-                  }
-                },
-                "sqale_rating": {
-                  "properties": {
-                    "data": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "frmt_val": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "key": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "val": {
-                      "type": "float"
-                    }
-                  }
-                },
-                "violations": {
-                  "properties": {
-                    "frmt_val": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "key": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "val": {
-                      "type": "float"
-                    }
-                  }
-                },
-                "vulnerabilities": {
-                  "properties": {
-                    "frmt_val": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "key": {
-                      "type": "text",
-                      "fields": {
-                        "keyword": {
-                          "type": "keyword",
-                          "ignore_above": 256
-                        }
-                      }
-                    },
-                    "val": {
-                      "type": "float"
-                    }
-                  }
-                }
-              }
-            },
-            "vscan": {
-              "properties": {
-                "data_scanned": {
-                  "type": "text",
-                  "fields": {
-                    "keyword": {
-                      "type": "keyword",
-                      "ignore_above": 256
-                    }
-                  }
-                },
-                "infected_files": {
-                  "type": "long"
-                },
-                "lastscan": {
-                  "type": "date"
-                },
-                "scanned_directories": {
-                  "type": "long"
-                },
-                "scanned_files": {
-                  "type": "long"
-                },
-                "time": {
-                  "type": "text",
-                  "fields": {
-                    "keyword": {
-                      "type": "keyword",
-                      "ignore_above": 256
-                    }
-                  }
-                },
-                "reported_files": {
-                  "properties": {
-                    "filename": {
-                      "type": "text"
-                    },
-                    "virus": {
-                      "type": "text"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "sourceData": {
-          "properties": {
-            "commits": {
-              "type": "long"
-            },
-            "contributors": {
-              "properties": {
-                "avatarUrl": {
-                  "type": "text",
-                  "fields": {
-                    "keyword": {
-                      "type": "keyword",
-                      "ignore_above": 256
-                    }
-                  }
-                },
-                "profileUrl": {
-                  "type": "text",
-                  "fields": {
-                    "keyword": {
-                      "type": "keyword",
-                      "ignore_above": 256
-                    }
-                  }
-                },
-                "userType": {
-                  "type": "text",
-                  "fields": {
-                    "keyword": {
-                      "type": "keyword",
-                      "ignore_above": 256
-                    }
-                  }
-                },
-                "username": {
-                  "type": "text",
-                  "fields": {
-                    "keyword": {
-                      "type": "keyword",
-                      "ignore_above": 256
-                    }
-                  }
-                }
-              }
-            },
-            "createdAt": {
-              "type": "date"
-            },
-            "description": {
-              "type": "text",
-              "analyzer": "grimdall_analyzer"
-            },
-            "defaultBranch": {
-              "type": "text"
-            },
-            "forks": {
-              "properties": {
-                "forkedRepos": {
-                  "properties": {
-                    "id": {
-                      "type": "text"
-                    },
-                    "name": {
-                      "type": "text"
-                    },
-                    "owner": {
-                      "type": "text"
-                    }
-                  }
-                }
-              }
-            },
-            "language": {
-              "type": "text",
-              "analyzer": "language_analyzer",
-              "search_analyzer": "language_analyzer_search"
-            },
-            "languages": {
-              "type": "object"
-            },
-            "lastPush": {
-              "type": "date"
-            },
-            "name": {
-              "type": "text",
-              "fields": {
-                "substring": {
-                  "type": "text",
-                  "analyzer": "title_ngram_analyzer",
-                  "search_analyzer": "title_analyzer"
                 }
               },
-              "analyzer": "title_analyzer"
-            },
-            "owner": {
-              "properties": {
-                "avatarUrl": {
-                  "type": "text"
-                },
-                "name": {
-                  "type": "text",
-                  "fields": {
-                    "keyword": {
-                      "type": "keyword",
-                      "ignore_above": 256
+              "code_smells": {
+                "properties": {
+                  "frmt_val": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
                     }
+                  },
+                  "key": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "val": {
+                    "type": "float"
                   }
-                },
-                "type": {
-                  "type": "text",
-                  "fields": {
-                    "keyword": {
-                      "type": "keyword",
-                      "ignore_above": 256
+                }
+              },
+              "reliability_rating": {
+                "properties": {
+                  "data": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
                     }
+                  },
+                  "frmt_val": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "key": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "val": {
+                    "type": "float"
                   }
-                },
-                "url": {
-                  "type": "text",
-                  "fields": {
-                    "keyword": {
-                      "type": "keyword",
-                      "ignore_above": 256
+                }
+              },
+              "security_rating": {
+                "properties": {
+                  "data": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
                     }
+                  },
+                  "frmt_val": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "key": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "val": {
+                    "type": "float"
+                  }
+                }
+              },
+              "sqale_index": {
+                "properties": {
+                  "frmt_val": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "key": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "val": {
+                    "type": "float"
+                  }
+                }
+              },
+              "sqale_rating": {
+                "properties": {
+                  "data": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "frmt_val": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "key": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "val": {
+                    "type": "float"
+                  }
+                }
+              },
+              "violations": {
+                "properties": {
+                  "frmt_val": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "key": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "val": {
+                    "type": "float"
+                  }
+                }
+              },
+              "vulnerabilities": {
+                "properties": {
+                  "frmt_val": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "key": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "val": {
+                    "type": "float"
                   }
                 }
               }
-            },
-            "readme": {
-              "properties": {
-                "content": {
-                  "type": "text",
-                  "analyzer": "grimdall_analyzer"
-                },
-                "url": {
-                  "type": "text"
-                }
-              }
-            },
-            "releases": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "text"
-                },
-                "name": {
-                  "type": "text"
-                },
-                "tagName": {
-                  "type": "text"
-                },
-                "assets": {
-                  "properties": {
-                    "id": {
-                      "type": "text"
-                    },
-                    "name": {
-                      "type": "text"
-                    },
-                    "label": {
-                      "type": "text"
-                    },
-                    "size": {
-                      "type": "long"
-                    },
-                    "dowloadCount": {
-                      "type": "long"
-                    }
-                  }
-                },
-                "totalDownloads": {
-                  "type": "long"
-                }
-              }
-            },
-            "repositoryUrl": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "stars": {
-              "type": "long"
-            },
-            "watchers": {
-              "type": "long"
             }
+          },
+          "vscan": {
+            "properties": {
+              "data_scanned": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "infected_files": {
+                "type": "long"
+              },
+              "lastscan": {
+                "type": "date"
+              },
+              "scanned_directories": {
+                "type": "long"
+              },
+              "scanned_files": {
+                "type": "long"
+              },
+              "time": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "reported_files": {
+                "properties": {
+                  "filename": {
+                    "type": "text"
+                  },
+                  "virus": {
+                    "type": "text"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "sourceData": {
+        "properties": {
+          "commits": {
+            "type": "long"
+          },
+          "contributors": {
+            "properties": {
+              "avatarUrl": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "profileUrl": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "userType": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "username": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              }
+            }
+          },
+          "createdAt": {
+            "type": "date"
+          },
+          "description": {
+            "type": "text",
+            "analyzer": "grimdall_analyzer"
+          },
+          "defaultBranch": {
+            "type": "text"
+          },
+          "forks": {
+            "properties": {
+              "forkedRepos": {
+                "properties": {
+                  "id": {
+                    "type": "text"
+                  },
+                  "name": {
+                    "type": "text"
+                  },
+                  "owner": {
+                    "type": "text"
+                  }
+                }
+              }
+            }
+          },
+          "language": {
+            "type": "text",
+            "analyzer": "language_analyzer",
+            "search_analyzer": "language_analyzer_search"
+          },
+          "languages": {
+            "type": "object"
+          },
+          "lastPush": {
+            "type": "date"
+          },
+          "name": {
+            "type": "text",
+            "fields": {
+              "substring": {
+                "type": "text",
+                "analyzer": "title_ngram_analyzer",
+                "search_analyzer": "title_analyzer"
+              }
+            },
+            "analyzer": "title_analyzer"
+          },
+          "owner": {
+            "properties": {
+              "avatarUrl": {
+                "type": "text"
+              },
+              "name": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "type": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "url": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              }
+            }
+          },
+          "readme": {
+            "properties": {
+              "content": {
+                "type": "text",
+                "analyzer": "grimdall_analyzer"
+              },
+              "url": {
+                "type": "text"
+              }
+            }
+          },
+          "releases": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "text"
+              },
+              "name": {
+                "type": "text"
+              },
+              "tagName": {
+                "type": "text"
+              },
+              "assets": {
+                "properties": {
+                  "id": {
+                    "type": "text"
+                  },
+                  "name": {
+                    "type": "text"
+                  },
+                  "label": {
+                    "type": "text"
+                  },
+                  "size": {
+                    "type": "long"
+                  },
+                  "dowloadCount": {
+                    "type": "long"
+                  }
+                }
+              },
+              "totalDownloads": {
+                "type": "long"
+              }
+            }
+          },
+          "repositoryUrl": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "stars": {
+            "type": "long"
+          },
+          "watchers": {
+            "type": "long"
           }
         }
       }
     }
+  }
 }
