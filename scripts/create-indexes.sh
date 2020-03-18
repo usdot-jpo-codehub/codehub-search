@@ -24,3 +24,9 @@ echo 'Creating index: Related'
 curl -s -XPUT $HOST/related/ -H "Content-Type: application/json" -d @../schemas/releated-index.json
 echo
 echo 'end'
+
+# Create Index: Configurations
+echo 'Creating index: Configurations'
+curl -s -XPUT $HOST/configurations/ -H "Content-Type: application/json" -d @../schemas/configurations-index.json
+echo
+echo 'end'

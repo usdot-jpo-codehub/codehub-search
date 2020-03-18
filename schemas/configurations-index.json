@@ -84,6 +84,16 @@
           },
           "lastModified": {
             "type": "date"
+          },
+          "isPopular": {
+            "type": "boolean"
+          },
+          "orderPopular": {
+            "type": "long"
+          },
+          "imageFileName": {
+            "type": "text",
+            "index": false
           }
         }
       }

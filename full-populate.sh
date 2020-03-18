@@ -28,3 +28,11 @@ echo 'Done creating index: Related'
 echo 'Adding data to index: Related'
 elasticdump --input=/data/related-data.json --output=$ELASTICSEARCH_URL/related --type=data
 echo 'Done adding data to index: Related'
+
+echo 'Creating index: Configurations'
+curl -s -XPUT $HOST/related/ -H "Content-Type: application/json" -d @/schemas/configurations-index.json
+echo 'Done creating index: Configurations'
+
+echo 'Adding data to index: Configurations'
+elasticdump --input=/data/configurations-data.json --output=$ELASTICSEARCH_URL/configurations --type=data
+echo 'Done adding data to index: Configurations'
