@@ -15,10 +15,10 @@ phases:
   build:
     commands:
       - npm install -g elasticdump
-      - mkdir data
-      - elasticdump --input=$DEPLOYED_ELASTICSEARCH_URL/projects --output=data/projects-data.json --type=data
-      - elasticdump --input=$DEPLOYED_ELASTICSEARCH_URL/repos --output=data/repos-data.json --type=data
-      - elasticdump --input=$DEPLOYED_ELASTICSEARCH_URL/code --output=data/code-data.json --type=data
+      - mkdir -p data
+      - elasticdump --input=$DEPLOYED_ELASTICSEARCH_URL/repositories --output=data/repositories-data.json --type=data
+      - elasticdump --input=$DEPLOYED_ELASTICSEARCH_URL/related --output=data/related-data.json --type=data
+      - elasticdump --input=$DEPLOYED_ELASTICSEARCH_URL/configurations --output=data/configurations-data.json --type=data
       - docker build -t $IMAGE_URI:$IMAGE_TAG .
   post_build:
     commands:

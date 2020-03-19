@@ -13,26 +13,26 @@ if [ "$STATUS" -ne 200 ]; then
   exit 1
 fi
 
-echo 'Creating index: Projects'
-curl -s -XPUT $HOST/projects/ -H "Content-Type: application/json" -d @/schemas/projects-index.json
-echo 'Done creating index: Projects'
+echo 'Creating index: Repositories'
+curl -s -XPUT $HOST/repositories/ -H "Content-Type: application/json" -d @/schemas/repositories-index.json
+echo 'Done creating index: repositories'
 
-echo 'Creating index: Code'
-curl -s -XPUT $HOST/code/ -H "Content-Type: application/json" -d @/schemas/code-index.json
-echo 'Done creating index: Code'
+echo 'Adding data to index: Repositories'
+elasticdump --input=/data/repositories-data.json --output=$ELASTICSEARCH_URL/repositories --type=data
+echo 'Done adding data to index: Repositories'
 
-echo 'Creating index: Repos'
-curl -s -XPUT $HOST/repos/ -H "Content-Type: application/json" -d @/schemas/repos-index.json
-echo 'Done creating index: Repos'
+echo 'Creating index: Related'
+curl -s -XPUT $HOST/related/ -H "Content-Type: application/json" -d @/schemas/related-index.json
+echo 'Done creating index: Related'
 
-echo 'Adding data to index: Projects'
-elasticdump --input=/data/projects-data.json --output=$ELASTICSEARCH_URL/projects --type=data
-echo 'Done adding data to index: Projects'
+echo 'Adding data to index: Related'
+elasticdump --input=/data/related-data.json --output=$ELASTICSEARCH_URL/related --type=data
+echo 'Done adding data to index: Related'
 
-echo 'Adding data to index: Repos'
-elasticdump --input=/data/repos-data.json --output=$ELASTICSEARCH_URL/repos --type=data
-echo 'Done adding data to index: Repos'
+echo 'Creating index: Configurations'
+curl -s -XPUT $HOST/related/ -H "Content-Type: application/json" -d @/schemas/configurations-index.json
+echo 'Done creating index: Configurations'
 
-echo 'Adding data to index: Code'
-elasticdump --input=/data/code-data.json --output=$ELASTICSEARCH_URL/code --type=data
-echo 'Done adding data to index: Code'
+echo 'Adding data to index: Configurations'
+elasticdump --input=/data/configurations-data.json --output=$ELASTICSEARCH_URL/configurations --type=data
+echo 'Done adding data to index: Configurations'
