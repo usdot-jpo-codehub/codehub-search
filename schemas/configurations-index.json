@@ -86,6 +86,37 @@
             "type": "date"
           }
         }
+      },
+      "engagementPopups": {
+        "properties": {
+          "id": {
+            "type": "text",
+            "index": false
+          },
+          "name": {
+            "type": "text"
+          },
+          "description": {
+            "type": "text"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "lastModified": {
+            "type": "date"
+          },
+          "content": {
+            "type": "text"
+          },
+          "controlsColor": {
+            "type": "text",
+            "index": false
+          },
+          "controlsShadow": {
+            "type": "text",
+            "index": false
+          }
+        }
       }
     }
   }
