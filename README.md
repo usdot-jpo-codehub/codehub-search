@@ -4,7 +4,7 @@ This repository contains the ITS CodeHub ElasticSearch schema documents as well 
 
 ## Getting Started
 
-This repository is broken down into two folders: schemas and scripts. The schemas directory contains the ElasticSearch schemas that ITS CodeHub uses to organize and manage data. The scripts directory provides guidance for how to interact with ElasticSearch, particularly running ES in Docker, creating indexes, listing them, and using elasticsearch-dump for data management.
+This repository is broken down into three folders: migration, schemas and scripts. The migration directory contains migration scripts to be run for data schema promotion. The schemas directory contains the ElasticSearch schemas that ITS CodeHub uses to organize and manage data. The scripts directory provides guidance for how to interact with ElasticSearch, particularly running ES in Docker, creating indexes, listing them, and using elasticsearch-dump for data management.
 
 ### Prerequisites
 
@@ -41,6 +41,24 @@ There are several scripts provided in the scripts directory.
 4. `elasticdump-output-data.sh` - Gives an example of how to use NPM-installed elasticsearch-dump to dump data from ES into a file. Swap the input and output to reverse and upload data from a file into ES. Swap index name to change which index you are accessing. See script comments for more information.
 
 5. `elasticdump-output-data-docker.sh` - Gives an example of how to use Dockerized elasticsearch-dump to dump data from ES into a file. Swap the input and output to reverse and upload data from a file into ES. Swap index name to change which index you are accessing. See script comments for more information.
+
+### Migration
+
+Promotion of schema versions are handled via the use of migration scripts. Migration scripts require the following information:
+
+1. `INDEX_ALIAS_NAME` - This is the name of the Elasticsearch alias that is referenced for the index being migrated.
+
+2. `SOURCE_INDEX` - This is the current index that is being migrated.
+
+3. `TARGET_INDEX` - The name of the new index to be created using the migrated schema.
+
+4. `MAPPING_FILE_PATH` - The path to the mapping file to be used to create the new index.
+
+5. `migrateData(source_dataset)` - The function to house the migration logic.
+
+A sample migration script `migration_template.py` is located in the `/migration` directory. This template is to be copied into the `/migration` directory, and specified in the `buildspec.yml` for execution.
+
+After successful execution of a migration script, the source index will remain in elasticsearch unchanged. The new target index will be created, and the specified Elasticsearch alias will be updated to reference the target index, and dereference the source index.
 
 ## Contributing
 
