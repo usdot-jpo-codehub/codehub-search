@@ -390,6 +390,31 @@
                     "type": "float"
                   }
                 }
+              },
+              "ncloc": {
+                "properties": {
+                  "frmt_val": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "key": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "val": {
+                    "type": "float"
+                  }
+                }
               }
             }
           },
@@ -627,6 +652,9 @@
             "type": "long"
           },
           "watchers": {
+            "type": "long"
+          },
+          "forksCount": {
             "type": "long"
           }
         }
